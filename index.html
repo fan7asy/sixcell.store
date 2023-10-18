@@ -5,59 +5,9 @@
     <title>SIXCELL</title>
     <link rel="icon" type="image" href="icon.png">
     <link rel="stylesheet" type="text/css" href="main.css">
-    <script src="./script"></script>
+    <script src="./script.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1" /> 
 </head>
-    
-<style>
-    body {
-        animation: transitionIn 0.75s;
-    }
-    
-    @keyframes transitionIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-    
-    .center {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        margin-right: -50%;
-        transform: translate(-50%, -50%) 
-    }
-
-    img {
-        user-drag: none;
-        user-select: none;
-        -moz-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
-    
-    p {
-        user-drag: none;
-        user-select: none;
-        -moz-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
-    
-    div {
-        user-drag: none;
-        user-select: none;
-        -moz-user-select: none;
-        -webkit-user-drag: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-    }
-</style>
     
 <body>
     <div class="center">
@@ -65,48 +15,8 @@
         <br>
         <br>
         <div style="text-align: center" class="clock" timezone="-7"></div>
-
-            <script>
-                function dateToText(date) {
-                    var hours = date.getHours()
-                    var minutes = date.getMinutes();
-                    var seconds = date.getSeconds();
-                    if (minutes < 10) minutes = '0'+minutes;
-                    if (seconds < 10) seconds = '0'+seconds;
-                    if (hours < 10) hours = '0'+hours;
-                    
-                    return hours + ":" + minutes + ":" + seconds + " PST";
-                }
-                function updateClocks() {
-                  for (var i = 0; i < window.arrClocks.length; i++) {
-                    var clock = window.arrClocks[i];
-                    var offset = window.arrOffsets[i];
-                    clock.innerHTML = dateToText(new Date(new Date().getTime()+offset));
-                  }
-                }
-                function startClocks() {
-                  clockElements = document.getElementsByClassName('clock');
-                  window.arrClocks = []
-                  window.arrOffsets = [];
-                  var j = 0;
-                  for(var i = 0; i < clockElements.length; i++) {
-                    el = clockElements[i];
-                    timezone = parseInt(el.getAttribute('timezone'));
-                    if (!isNaN(timezone)) {
-                      var tzDifference = timezone * 60 + (new Date()).getTimezoneOffset();
-                      var offset = tzDifference * 60 * 1000;
-                      window.arrClocks.push(el);
-                      window.arrOffsets.push(offset);
-                    }
-                  }
-                  updateClocks();
-                  clockID = setInterval(updateClocks, 1000);
-                }
-                setTimeout(startClocks, 100);
-            </script>
-        <br>
-        <p style="text-align: center"><a href="#">shop</a> | <a href="#">archive</a> | <a href="#">support</a> 
-        </p>
+            
+        <p style="text-align: center" ><a href="#" class="nav-link">shop</a> | <a href="#" class="nav-link">archive</a> | <a href="./support.html" class="nav-link">support</a></p>
         
     </div>
     
