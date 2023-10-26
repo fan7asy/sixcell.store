@@ -1,0 +1,15 @@
+{
+  "name": "three-test-blake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "dev": "npx vite"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "three": "^0.157.0",
+    "vite": "^4.5.0"
+  }
+}
