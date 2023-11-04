@@ -2,15 +2,15 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 // globals
-let mouse, target, model, renderer, scene, camera;
+let mouse, target, model, renderer, scene, camera, spriteSheetTexture;
 
 function init() {
 
     // set up mouse stuff
     target = new THREE.Vector3(0, 0, 2.7);
-    mouse = new THREE.Vector2(0,-1.5);
+    mouse = new THREE.Vector2(0, -1.5);
 
-    // set up scene icluding camera and renderer
+    // set up scene including camera and renderer
     scene = new THREE.Scene();
     scene.background = new THREE.Color('white');
 
@@ -29,32 +29,31 @@ function init() {
     light.position.set(0, 0, 3);
     scene.add(light);
 
-    // get the video
-    const video = document.getElementById('video');
-    const videoTexture = new THREE.VideoTexture(video);
-    videoTexture.minFilter = THREE.NearestFilter;
-    videoTexture.magFilter = THREE.NearestFilter;
+    // get the sprite sheet
+    spriteSheetTexture = new THREE.TextureLoader().load('public/spritesheet.png');
 
-    // make the material from the video
-    const material = new THREE.MeshBasicMaterial({ map: videoTexture });
+    // create a material from the sprite sheet
+    const material = new THREE.MeshBasicMaterial({ map: spriteSheetTexture });
     material.side = THREE.BackSide;
     material.transparent = true;
     material.map.flipY = false;
+    
+    // texture filters to sharpen png face
+    material.map.minFilter = THREE.NearestFilter;
+    material.map.magFilter = THREE.NearestFilter;
 
     // load the model
     const loader = new GLTFLoader();
     loader.load('/sixcen_head_3.glb', (gltf) => {
         // onload
         model = gltf.scene;
-        model.scale.set(1.5,1.5,1.5)
+        model.scale.set(1.5, 1.5, 1.5);
         model.position.set(0, 0, 0);
-        model.traverse(
-            (o) => {
-                if (o.name == "sixcen_png_face") {
-                    o.material = material;
-                }
+        model.traverse((o) => {
+            if (o.name == "sixcen_png_face") {
+                o.material = material; // Assign the sprite sheet material
             }
-        )
+        });
         scene.add(model);
 
         const mixer = new THREE.AnimationMixer(model);
@@ -74,22 +73,44 @@ const render = () => {
 
 const update = () => {
     requestAnimationFrame(update);
-    
+
     if (model && model.mixer) {
         model.mixer.update(0.01); // You can adjust the time delta as needed
     }
-    // basic lerping
+
+    // Calculate the current frame index based on the time
+    const currentTime = Date.now();
+    const frameDuration = 6000; // 4 seconds for the first frame
+    const totalDuration = frameDuration + 500; // Total duration (4s + 0.5s)
+    const frameIndex = Math.floor((currentTime % totalDuration) / frameDuration);
+
+    // Update the texture offset and repeat based on the current frame index
+    const frameWidth = 1 / 2; // Assuming 2 frames
+
+    if (frameIndex === 0) {
+        // Display the first frame for 4 seconds
+        spriteSheetTexture.offset.x = 0;
+        spriteSheetTexture.repeat.x = frameWidth;
+    } else {
+        // Display the second frame for half a second and loop
+        spriteSheetTexture.offset.x = frameWidth;
+        spriteSheetTexture.repeat.x = frameWidth;
+    }
+
+    // Basic lerping
     target.x += (mouse.x - target.x) * 0.1;
     target.y += (mouse.y - target.y) * 0.1;
     if (model) {
         model.lookAt(target);
     }
-}
+};
 
 window.addEventListener('mousemove', function(e) {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 - 1;
 });
+
+
 
 init();
 render();
