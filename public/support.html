@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    
+<head>
+    <title>SIXCELL</title>
+    <link rel="icon" type="image" href="icon.png">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+</head>
+
+<style>
+
+input {
+    width: 90.5%;
+    padding: 10px;
+    font-family: supreem;
+    font-size: 85%;
+    resize: none;
+}
+input[type=text]:focus {
+  border: 3px solid #555;
+}
+    
+textarea {
+    width: 91.5%;
+    padding: 10px;
+    font-family: supreem;
+    font-size: 70%;
+    resize: none;
+}
+
+button {
+    width: 100%;
+     
+    background-color: white;
+  color: black;
+    border-radius: 12px;
+    font-family: supreem;
+    font-size: 100%;
+    resize: none;
+}
+</style>
+    
+<body>
+    <div class="center">
+        <form id="form">
+            <div style="text-align: center"><input type="text" placeholder="Name" id="name" autocomplete="off"></div>
+            <div style="text-align: center"><input type="email" placeholder="Email" id="email" autocomplete="off"></div>
+            <div style="text-align: center"><textarea id="message" placeholder="Message (include Order ID if available)" cols="30" rows="20"></textarea></div>
+            <button id="btn">submit</button>
+        </form>
+        <p style="text-align: center"><a href="index.html" class="nav-link">back</a></p>
+    </div>
+        <div class="copyright">
+    &copy; 2019 Sixcell. All rights reserved.
+    </div>
+</body>
+    
+<script src="https://smtpjs.com/v3/smtp.js"></script>    
+
+<script>
+    var btn = document.getElementById('btn');
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('email').value;
+        var message = document.getElementById('message').value;
+        
+        if (name.trim() === '' || email.trim() === '' || message.trim() === '') {
+            alert("Please fill in all fields before submitting.");
+        } else {
+            var body = 'Name: ' + name + '<br/>Email: ' + email + '<br/>Message: ' + message;
+
+            Email.send({
+                SecureToken: "4856ad4c-2422-4527-832b-7da2f1f8a850",
+                To: 'customerservice6cell@gmail.com',
+                From: "customerservice6cell@gmail.com",
+                Subject: "New Sixcell Support Message",
+                Body: body
+            }).then(function (message) {
+                alert("Message sent successfully!");
+                // Clear the form fields after a successful message send
+                document.getElementById('name').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('message').value = '';
+            });
+        }
+    })
+</script>
+    
+</html>

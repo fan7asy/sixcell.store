@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SIXCELL</title>
+    <link rel="icon" href="icon.ico">
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+</head>
+
+<body>
+    <div class="center">
+        <div class="square" style="background-image: url('1.png'); background-size: cover; background-position: center;"></div>
+        <p style="text-align: center; margin: 18px 0;" ><a href="#" class="nav-link">2018</a> | <a href="./archive.html" class="nav-link">2019</a> | <a class="nav-link" href="./support.html" class="nav-link">2020</a></p>
+        <p style="text-align: center; margin: 18px 0;" ><a href="#" class="nav-link">2021</a> | <a href="./archive.html" class="nav-link">2022</a> | <a class="nav-link" href="./support.html" class="nav-link">2023</a></p>
+        <p style="text-align: center"><a href="index.html" class="nav-link">back</a></p>
+    </div>
+    <div class="copyright">
+    © 2019 Sixcell. All rights reserved.
+    </div>
+
+<script>
+    var images = [
+        '1.png',
+        '2.png',
+        '3.png',
+        '4.png'
+    ];
+    var currentIndex = 0;
+    var imgElement = document.querySelector('.square');
+
+    function preloadImages() {
+        for (var i = 0; i < images.length; i++) {
+            new Image().src = images[i];
+        }
+    }
+
+    function changeImage() {
+        imgElement.style.backgroundImage = 'url(' + images[currentIndex] + ')';
+        imgElement.style.transition = 'background-image 1s ease-in-out';
+        currentIndex++;
+        if (currentIndex == images.length) {
+            currentIndex = 0;
+        }
+    }
+
+    preloadImages(); // Preload the images
+    changeImage();  // Set the initial image
+
+    setInterval(changeImage, 4000); // Change image every 4 seconds
+</script>
+</body>
+</html>

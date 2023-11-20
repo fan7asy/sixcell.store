@@ -3,21 +3,56 @@
     
 <head>
     <title>SIXCELL</title>
-    <link rel="icon" type="image" href="icon.png">
+    <link rel="icon" href="icon.ico">
     <link rel="stylesheet" type="text/css" href="main.css">
-    <script src="./script.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta property="og:image" content="1.png">
 </head>
-<video hidden id="video" autoplay muted playinline loop>
-			<source src="sixcen-sequence.webm" type="video/webm">
-		</video>
+    
 <body>
     <div class="center">
         <div id="scene-container"></div>
         <script type="module" src="main.js"></script>
         <div style="text-align: center" class="clock" timezone="-7"></div>
-        <p style="text-align: center" ><a href="#" class="nav-link">shop</a> | <a href="#" class="nav-link">archive</a> | <a href="./support.html" class="nav-link">support</a></p>
+        <p style="text-align: center; margin: 18px 0;" ><a href="#" class="nav-link">shop</a> | <a href="./archive.html" class="nav-link">archive</a> | <a class="nav-link" href="./support.html" class="nav-link">support</a></p>
+        <div style="text-align: center">
+            <a href="https://www.instagram.com/sixcell.store/"><img src="instagram.png" width="25px" height="25px" style="margin-right: 10px"></a>
+            <a href="https://twitter.com/sixcelll"><img src="twitter.png" width="25px" height="25px" style="margin-left: 10px"></a>
+        </div>
     </div>
-    
+    <div class="copyright">
+    <div>&copy; 2019 Sixcell. All rights reserved.</div>
+    </div>
 </body>
+    
+<script>
+    function displayTimeInTimeZone(clockElement, timeZone) {
+        const options = {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZone: 'America/Los_Angeles' // Use 'America/Los_Angeles' for PST/PDT
+        };
+        const timeString = new Date().toLocaleTimeString('en-US', options);
+        clockElement.textContent = timeString;
+    }
+
+    function updateClocks() {
+        const clockElements = document.querySelectorAll('.clock');
+        clockElements.forEach((clockElement, index) => {
+            const timeZone = parseInt(clockElement.getAttribute('timezone'));
+            if (!isNaN(timeZone)) {
+                displayTimeInTimeZone(clockElement, timeZone);
+            }
+        });
+    }
+
+    function startClocks() {
+        updateClocks();
+        setInterval(updateClocks, 1000);
+    }
+
+    setTimeout(startClocks, 100);
+</script>
+
 </html>

@@ -6,7 +6,7 @@ let mouse, target, model, renderer, scene, camera, spriteSheetTexture;
 
 function init() {
 
-    // set up mouse stuff
+    // set up mouse and touch event handling
     target = new THREE.Vector3(0, 0, 2.7);
     mouse = new THREE.Vector2(0, -1.5);
 
@@ -30,7 +30,7 @@ function init() {
     scene.add(light);
 
     // get the sprite sheet
-    spriteSheetTexture = new THREE.TextureLoader().load('public/spritesheet.png');
+    spriteSheetTexture = new THREE.TextureLoader().load('spritesheet.png');
 
     // create a material from the sprite sheet
     const material = new THREE.MeshBasicMaterial({ map: spriteSheetTexture });
@@ -105,12 +105,36 @@ const update = () => {
     }
 };
 
-window.addEventListener('mousemove', function(e) {
-    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(e.clientY / window.innerHeight) * 2 - 1;
+// Event handler for both mouse and touch events
+const handleInput = (event) => {
+    if (event.touches) {
+        // Handle touch events
+        mouse.x = (event.touches[0].clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.touches[0].clientY / window.innerHeight) * 2 - 1;
+    } else {
+        // Handle mouse events
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 - 1;
+    }
+
+    // Update the model's orientation
+    if (model) {
+        model.lookAt(target);
+    }
+};
+
+// Add event listeners for both mouse and touch events
+window.addEventListener('mousemove', handleInput);
+window.addEventListener('touchstart', handleInput);
+window.addEventListener('touchmove', handleInput);
+
+// Handle touchend to stop model movement (optional)
+window.addEventListener('touchend', () => {
+    mouse.set(0, -1.5);
+    if (model) {
+        model.lookAt(target);
+    }
 });
-
-
 
 init();
 render();
